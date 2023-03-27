@@ -2,7 +2,7 @@
 #include "Entity.h"
 #include <tuple>
 #include <vector>
-#include "Input.h"
+#include "Direction.h"
 namespace Starburst {
 	Entity::Entity(int startX, int startY, Starburst::EntityType type)
 	{
@@ -10,6 +10,14 @@ namespace Starburst {
 		GridY = startY;
 		Identity = type;
 	}
+
+	Entity::Entity(int startX, int startY, Starburst::EntityType type, Starburst::Direction direction)
+	{
+		GridX = startX;
+		GridY = startY;
+		Identity = type;
+		Direction = direction;
+	}	
 
 	Entity::Entity() {}
 
@@ -22,19 +30,74 @@ namespace Starburst {
 	{
 		return std::make_tuple(GridX, GridY);
 	}
-	void Entity::Move(Starburst::Input input, std::vector<Entity>& entities)
+	void Entity::Move(Starburst::Direction input, std::vector<Entity>& entities)
 	{
-		if (input == Starburst::Up) {
-			GridY--;
+		bool canMove = true;
+		if (input == Starburst::Up) {		
+
+			for (Entity ent : entities)
+			{
+				auto entPosition = ent.GetPosition();
+				if (std::get<0>(entPosition) == GridX && std::get<1>(entPosition) == GridY - 1) {
+					canMove = false;
+				}
+			}
+
+			if (canMove) {
+				GridY--;
+			}
+			else {
+				Direction = Starburst::Down;
+			}
 		}
 		else if (input == Starburst::Down) {
-			GridY++;
+			for (Entity ent : entities)
+			{
+				auto entPosition = ent.GetPosition();
+				if (std::get<0>(entPosition) == GridX && std::get<1>(entPosition) == GridY + 1) {
+					canMove = false;
+				}
+			}
+
+			if (canMove) {
+				GridY++;
+			}
+			else {
+				Direction = Starburst::Up;
+			}
 		}
 		else if (input == Starburst::Left) {
-			GridX++;
+			for (Entity ent : entities)
+			{
+				auto entPosition = ent.GetPosition();
+				if (std::get<0>(entPosition) == GridX + 1 && std::get<1>(entPosition) == GridY) {
+					canMove = false;
+				}
+			}
+
+			if (canMove) {
+				GridY++;
+			}
+
+			else {
+				Direction = Starburst::Right;
+			}
 		}
 		else if (input == Starburst::Right) {
-			GridX--;
+			for (Entity ent : entities)
+			{
+				auto entPosition = ent.GetPosition();
+				if (std::get<0>(entPosition) == GridX - 1 && std::get<1>(entPosition) == GridY) {
+					canMove = false;
+				}
+			}
+
+			if (canMove) {
+				GridX--;
+			}
+			else {
+				Direction = Starburst::Left;
+			}
 		}
 	}
 }

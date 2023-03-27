@@ -1,19 +1,29 @@
 #include "pch.h"
 #include "GameState.h"
+#include "BasicEnemy.h"
+#include <TypeInfo>
 
 namespace Starburst {
+	bool GameState::CanNewEntityBePlaced(Starburst::Entity& oldEntity, Starburst::Entity& newEntity)
+	{
+		auto newEntityPosition = newEntity.GetPosition();
+		auto oldEntityPosition = oldEntity.GetPosition();
+		if (std::get<0>(newEntityPosition) == std::get<0>(oldEntityPosition) && std::get<1>(newEntityPosition) == std::get<1>(oldEntityPosition)) {
+			return false;
+		}
+
+		return true;
+	}
 	GameState::GameState(int gridHeight, int gridWidth) {
 		GridHeight = gridHeight;
 		GridWidth = gridWidth;
 	}
 	void GameState::AddEntity(Starburst::Entity entity)
 	{
-		auto entityPosition = entity.GetPosition();
 		bool free = true;
 		for (auto& ent : Entities)
 		{
-			auto entPosition = ent.GetPosition();
-			if (std::get<0>(entPosition) == std::get<0>(entityPosition) && std::get<1>(entPosition) == std::get<1>(entityPosition)) {
+			if (!CanNewEntityBePlaced(ent, entity)) {
 				free = false;
 			}
 		}
@@ -22,12 +32,14 @@ namespace Starburst {
 			if (entity.Identify() == Starburst::Player) {
 				Player = entity;
 			}
-			else {
+			else
+			{
 				Entities.push_back(entity);
 			}
 		}
 	}
-	void GameState::Tick(Starburst::Input input)
+
+	void GameState::Tick(Starburst::Direction input)
 	{
 		switch (input) {
 		case Up:
@@ -42,6 +54,11 @@ namespace Starburst {
 		case Right:
 			Player.Move(input, Entities);
 			break;
+		}
+
+		for (Starburst::Entity ent : Entities)
+		{
+			ent.Move(ent.Direction, Entities);
 		}
 	}
 }

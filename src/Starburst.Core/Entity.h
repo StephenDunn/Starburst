@@ -2,7 +2,7 @@
 #include <tuple>
 #include <vector>
 #include "EntityType.h"
-#include "Input.h"
+#include "Direction.h"
 
 namespace Starburst {
 	class Entity
@@ -14,8 +14,10 @@ namespace Starburst {
 	public:
 		Entity();
 		Entity(int startX, int startY, Starburst::EntityType type);
+		Entity(int startX, int startY, Starburst::EntityType type, Starburst::Direction direction);
+		Starburst::Direction Direction;
 		Starburst::EntityType Identify();
 		std::tuple<int, int> GetPosition();
-		void Move(Starburst::Input input, std::vector<Entity> &entities);
+		void Move(Starburst::Direction input, std::vector<Entity> &entities);
 	};
 }

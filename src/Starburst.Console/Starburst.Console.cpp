@@ -4,13 +4,19 @@
 #include <iostream>
 #include <..\Starburst.Core\GameState.h>
 #include <..\Starburst.Core\EntityType.h>
+#include <..\Starburst.Core\BasicEnemy.h>
+#include <..\Starburst.Core\Direction.h>
+#include <TypeInfo>
+
 
 int main()
 {
     std::cout << "Hello World!\n";
     Starburst::GameState* gs = new Starburst::GameState(10, 10);
 
-    gs->AddEntity(Starburst::Entity(1, 1, Starburst::EntityType::Enemy));
+    //auto* glf = new Starburst::Entity(5, 5, Starburst::EntityType::Enemy, Starburst::Down);
+
+    //gs->AddEntity(Starburst::Entity(5, 5, Starburst::EntityType::Enemy, Starburst::Down));
     gs->AddEntity(Starburst::Entity(5, 5, Starburst::EntityType::Player));
 
     gs->Tick(Starburst::Down);
