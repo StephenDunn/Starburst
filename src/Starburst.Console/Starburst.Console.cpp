@@ -2,22 +2,70 @@
 //
 
 #include <iostream>
+#include <stdio.h>
+#include <conio.h>
 #include <..\Starburst.Core\GameState.h>
 #include <..\Starburst.Core\EntityType.h>
 #include <..\Starburst.Core\BasicEnemy.h>
 #include <..\Starburst.Core\Direction.h>
 #include <TypeInfo>
+#include "Utilities.h"
 
+#define KB_UP 72
+#define KB_DOWN 80
+#define KB_LEFT 75
+#define KB_RIGHT 77
+#define KB_ESCAPE 27
 
 int main()
 {
-    std::cout << "Hello World!\n";
-    Starburst::GameState* gs = new Starburst::GameState(10, 10);
+    Starburst::GameState* gs = new Starburst::GameState(10, 5);
 
-    //auto* glf = new Starburst::Entity(5, 5, Starburst::EntityType::Enemy, Starburst::Down);
 
-    //gs->AddEntity(Starburst::Entity(5, 5, Starburst::EntityType::Enemy, Starburst::Down));
-    gs->AddEntity(Starburst::Entity(5, 5, Starburst::EntityType::Player));
+    gs->AddEntity(1, 1, Starburst::EntityType::Enemy, Starburst::Down);
+    gs->AddEntity(9, 1, Starburst::EntityType::Enemy, Starburst::Right);
+    gs->AddEntity(5, 5, Starburst::EntityType::Player, Starburst::Down);
+
+    while(true) {
+        Utilities::clear_screen();
+        auto board = gs->WriteGameState();
+
+        for (int i = 0; i < board.size(); i++)
+        {
+            for (int j = 0; j < board[0].size(); j++)
+            {
+                std::cout << board[i][j];
+            }
+            std::cout << "\n";
+        }
+
+        bool keyInvalid = true;
+        int keyPress;
+        while (keyInvalid) {
+            keyPress = _getch();
+            if (keyPress == KB_UP || keyPress == KB_DOWN || keyPress == KB_LEFT || keyPress == KB_RIGHT || keyPress == KB_ESCAPE) {
+                keyInvalid = false;
+            }
+        }
+
+        switch (keyPress) {
+        case KB_UP:
+            gs->Tick(Starburst::Up);
+            break;
+        case KB_DOWN:
+            gs->Tick(Starburst::Down);
+            break;
+        case KB_LEFT:
+            gs->Tick(Starburst::Left);
+            break;
+        case KB_RIGHT:
+            gs->Tick(Starburst::Right);
+            break;
+        case KB_ESCAPE:
+            return 0;
+
+        }
+    }
 
     gs->Tick(Starburst::Down);
     gs->Tick(Starburst::Down);
@@ -26,13 +74,4 @@ int main()
 
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file

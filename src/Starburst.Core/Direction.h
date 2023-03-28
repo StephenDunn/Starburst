@@ -1,11 +1,11 @@
 #pragma once
 
 namespace Starburst {
-	enum Direction {
-		Up,
-		Down,
-		Left,
-		Right,
-		None
+	enum Direction : unsigned int {
+		Up = 0,
+		Down = 1,
+		Left = 2,
+		Right = 3,
+		None = 4
 	};
 }

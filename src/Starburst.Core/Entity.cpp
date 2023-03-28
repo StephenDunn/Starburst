@@ -8,16 +8,25 @@ namespace Starburst {
 	{
 		GridX = startX;
 		GridY = startY;
+		NewGridX = startX;
+		NewGridY = startY;
 		Identity = type;
+		Direction = Starburst::None;
 	}
 
 	Entity::Entity(int startX, int startY, Starburst::EntityType type, Starburst::Direction direction)
 	{
 		GridX = startX;
 		GridY = startY;
+		NewGridX = startX;
+		NewGridY = startY;
 		Identity = type;
 		Direction = direction;
-	}	
+
+
+		//auto* glf = new Starburst::Entity(5, 5, Starburst::EntityType::Enemy, Starburst::Down);
+
+	}
 
 	Entity::Entity() {}
 
@@ -30,74 +39,49 @@ namespace Starburst {
 	{
 		return std::make_tuple(GridX, GridY);
 	}
-	void Entity::Move(Starburst::Direction input, std::vector<Entity>& entities)
+	std::tuple<int, int> Entity::GetNewPosition()
+	{
+		return std::make_tuple(NewGridX, NewGridY);
+	}
+	void Entity::Move(Starburst::Direction input)
 	{
 		bool canMove = true;
-		if (input == Starburst::Up) {		
-
-			for (Entity ent : entities)
-			{
-				auto entPosition = ent.GetPosition();
-				if (std::get<0>(entPosition) == GridX && std::get<1>(entPosition) == GridY - 1) {
-					canMove = false;
-				}
-			}
-
-			if (canMove) {
-				GridY--;
-			}
-			else {
-				Direction = Starburst::Down;
-			}
+		if (input == Starburst::Up) {
+			NewGridY = GridY - 1;
 		}
 		else if (input == Starburst::Down) {
-			for (Entity ent : entities)
-			{
-				auto entPosition = ent.GetPosition();
-				if (std::get<0>(entPosition) == GridX && std::get<1>(entPosition) == GridY + 1) {
-					canMove = false;
-				}
-			}
-
-			if (canMove) {
-				GridY++;
-			}
-			else {
-				Direction = Starburst::Up;
-			}
+			NewGridY = GridY + 1;
 		}
 		else if (input == Starburst::Left) {
-			for (Entity ent : entities)
-			{
-				auto entPosition = ent.GetPosition();
-				if (std::get<0>(entPosition) == GridX + 1 && std::get<1>(entPosition) == GridY) {
-					canMove = false;
-				}
-			}
-
-			if (canMove) {
-				GridY++;
-			}
-
-			else {
-				Direction = Starburst::Right;
-			}
+			NewGridX = GridX - 1;
 		}
 		else if (input == Starburst::Right) {
-			for (Entity ent : entities)
-			{
-				auto entPosition = ent.GetPosition();
-				if (std::get<0>(entPosition) == GridX - 1 && std::get<1>(entPosition) == GridY) {
-					canMove = false;
-				}
-			}
-
-			if (canMove) {
-				GridX--;
-			}
-			else {
-				Direction = Starburst::Left;
-			}
+			NewGridX = GridX + 1;
+		}
+	}
+	void Entity::SetPosition()
+	{
+		GridX = NewGridX;
+		GridY = NewGridY;
+	}
+	void Entity::ResetPosition()
+	{
+		NewGridX = GridX;
+		NewGridY = GridY;
+	}
+	void Entity::ReverseDirection()
+	{
+		if (Direction == Starburst::Up) {
+			Direction = Starburst::Down;
+		}
+		else if (Direction == Starburst::Down) {
+			Direction = Starburst::Up;
+		}
+		else if (Direction == Starburst::Left) {
+			Direction = Starburst::Right;
+		}
+		else if (Direction == Starburst::Right) {
+			Direction = Starburst::Left;
 		}
 	}
 }

@@ -10,6 +10,8 @@ namespace Starburst {
 	private:
 		int GridX;
 		int GridY;
+		int NewGridX;
+		int NewGridY;
 		Starburst::EntityType Identity;
 	public:
 		Entity();
@@ -18,6 +20,10 @@ namespace Starburst {
 		Starburst::Direction Direction;
 		Starburst::EntityType Identify();
 		std::tuple<int, int> GetPosition();
-		void Move(Starburst::Direction input, std::vector<Entity> &entities);
+		std::tuple<int, int> GetNewPosition();
+		void Move(Starburst::Direction input);
+		void SetPosition();
+		void ResetPosition();
+		void ReverseDirection();
 	};
 }
