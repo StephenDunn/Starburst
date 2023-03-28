@@ -78,6 +78,8 @@ int main()
 
         }
     }
+
+    _getch();
 }
 
 
