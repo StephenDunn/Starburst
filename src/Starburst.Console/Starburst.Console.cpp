@@ -8,6 +8,7 @@
 #include <..\Starburst.Core\EntityType.h>
 #include <..\Starburst.Core\BasicEnemy.h>
 #include <..\Starburst.Core\Direction.h>
+#include <..\Starburst.Core\Status.h>
 #include <TypeInfo>
 #include "Utilities.h"
 
@@ -25,9 +26,20 @@ int main()
     gs->AddEntity(1, 1, Starburst::EntityType::Enemy, Starburst::Down);
     gs->AddEntity(9, 1, Starburst::EntityType::Enemy, Starburst::Right);
     gs->AddEntity(5, 5, Starburst::EntityType::Player, Starburst::Down);
+    gs->AddEntity(5, 4, Starburst::EntityType::Wall, Starburst::None);
+    gs->AddEntity(5, 3, Starburst::EntityType::Wall, Starburst::None);
+    gs->AddEntity(5, 2, Starburst::EntityType::Wall, Starburst::None);
+    gs->AddEntity(5, 1, Starburst::EntityType::Wall, Starburst::None);
 
     while(true) {
         Utilities::clear_screen();
+
+        if (gs->GetGameStatus() == Starburst::GameOver) {
+            std::cout << "****************Game Over****************";
+            break;
+        }
+
+
         auto board = gs->WriteGameState();
 
         for (int i = 0; i < board.size(); i++)
@@ -66,12 +78,6 @@ int main()
 
         }
     }
-
-    gs->Tick(Starburst::Down);
-    gs->Tick(Starburst::Down);
-    gs->Tick(Starburst::Right);
-
-
 }
 
 

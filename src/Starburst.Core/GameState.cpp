@@ -30,6 +30,7 @@ namespace Starburst {
 		GridHeight = gridHeight;
 		GridWidth = gridWidth;
 		Entities = {};
+		GameStatus = Live;
 	}
 
 	void GameState::AddEntity(int startX, int startY, Starburst::EntityType type, Starburst::Direction direction)
@@ -73,13 +74,29 @@ namespace Starburst {
 		}
 
 		auto playerNewPosition = Player->GetNewPosition();
+
+		// Initial check to make sure player does not walk over enemy.
+		for (Starburst::Entity* entB : Entities)
+		{
+			auto entBNewPosition = entB->GetNewPosition();
+			if (CompareEntityPositions(playerNewPosition, entBNewPosition)) {
+				auto entId = entB->Identify();
+				if (entId == EntityType::Enemy) {
+					GameStatus = Status::GameOver;
+				}
+				else if (entId == EntityType::Wall) {
+					Player->ResetPosition();
+				}
+			}
+		}
+
 		if (std::get<0>(playerNewPosition) > GridHeight || std::get<1>(playerNewPosition) > GridWidth || std::get<0>(playerNewPosition) < 1 || std::get<1>(playerNewPosition) < 1) {
 			Player->ResetPosition();
 		}
 		else {
 			Player->SetPosition();
 		}
-		
+
 
 		for (Starburst::Entity* ent : Entities)
 		{
@@ -112,6 +129,22 @@ namespace Starburst {
 				entA->SetPosition();
 			}
 		}
+
+		// Second check player collision check to make sure player does not land on the same tile as an enemy.
+		for (Starburst::Entity* entB : Entities)
+		{
+			auto entBNewPosition = entB->GetNewPosition();
+			if (CompareEntityPositions(playerNewPosition, entBNewPosition)) {
+				auto entId = entB->Identify();
+				if (entId == EntityType::Enemy) {
+					GameStatus = Status::GameOver;
+				}
+			}
+		}
+	}
+	Starburst::Status GameState::GetGameStatus()
+	{
+		return GameStatus;
 	}
 	std::vector<std::vector<std::string>> GameState::WriteGameState()
 	{

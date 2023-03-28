@@ -147,6 +147,7 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Direction.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Status.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BasicEnemy.cpp" />
@@ -159,6 +160,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Starburst.Core.cpp" />
+    <ClCompile Include="Status.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
