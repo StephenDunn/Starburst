@@ -4,13 +4,14 @@
 #include <iostream>
 #include <stdio.h>
 #include <conio.h>
-#include <..\Starburst.Core\GameState.h>
 #include <..\Starburst.Core\EntityType.h>
 #include <..\Starburst.Core\BasicEnemy.h>
 #include <..\Starburst.Core\Direction.h>
 #include <..\Starburst.Core\Status.h>
 #include <TypeInfo>
 #include "Utilities.h"
+#include "..\Starburst.Core\Factories.h"
+
 
 #define KB_UP 72
 #define KB_DOWN 80
@@ -18,18 +19,11 @@
 #define KB_RIGHT 77
 #define KB_ESCAPE 27
 
+Starburst::GameFactory gameFactory;
+
 int main()
 {
-    Starburst::GameState* gs = new Starburst::GameState(10, 5);
-
-
-    gs->AddEntity(1, 1, Starburst::EntityType::Enemy, Starburst::Down);
-    gs->AddEntity(9, 1, Starburst::EntityType::Enemy, Starburst::Right);
-    gs->AddEntity(5, 5, Starburst::EntityType::Player, Starburst::Down);
-    gs->AddEntity(5, 4, Starburst::EntityType::Wall, Starburst::None);
-    gs->AddEntity(5, 3, Starburst::EntityType::Wall, Starburst::None);
-    gs->AddEntity(5, 2, Starburst::EntityType::Wall, Starburst::None);
-    gs->AddEntity(5, 1, Starburst::EntityType::Wall, Starburst::None);
+    Starburst::GameState* gs = gameFactory.GameStateFactory();
 
     while(true) {
         Utilities::clear_screen();
@@ -75,7 +69,6 @@ int main()
             break;
         case KB_ESCAPE:
             return 0;
-
         }
     }
 

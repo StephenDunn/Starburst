@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Starburst.Core", "Starburst
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Starburst.Console", "Starburst.Console\Starburst.Console.vcxproj", "{16549FD8-5F78-429D-8DC0-EAF48E8EBEFF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Starburst.Window", "Starburst.Window\Starburst.Window.vcxproj", "{60A570B1-5669-49D8-A70E-ED8F089DB2B8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{16549FD8-5F78-429D-8DC0-EAF48E8EBEFF}.Release|x64.Build.0 = Release|x64
 		{16549FD8-5F78-429D-8DC0-EAF48E8EBEFF}.Release|x86.ActiveCfg = Release|Win32
 		{16549FD8-5F78-429D-8DC0-EAF48E8EBEFF}.Release|x86.Build.0 = Release|Win32
+		{60A570B1-5669-49D8-A70E-ED8F089DB2B8}.Debug|x64.ActiveCfg = Debug|x64
+		{60A570B1-5669-49D8-A70E-ED8F089DB2B8}.Debug|x64.Build.0 = Debug|x64
+		{60A570B1-5669-49D8-A70E-ED8F089DB2B8}.Debug|x86.ActiveCfg = Debug|Win32
+		{60A570B1-5669-49D8-A70E-ED8F089DB2B8}.Debug|x86.Build.0 = Debug|Win32
+		{60A570B1-5669-49D8-A70E-ED8F089DB2B8}.Release|x64.ActiveCfg = Release|x64
+		{60A570B1-5669-49D8-A70E-ED8F089DB2B8}.Release|x64.Build.0 = Release|x64
+		{60A570B1-5669-49D8-A70E-ED8F089DB2B8}.Release|x86.ActiveCfg = Release|Win32
+		{60A570B1-5669-49D8-A70E-ED8F089DB2B8}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

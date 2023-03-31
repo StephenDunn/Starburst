@@ -26,6 +26,16 @@ namespace Starburst {
 		return false;
 	}
 
+	int GameState::GetGridWidth( )
+	{
+		return GridWidth;
+	}
+
+	int GameState::GetGridHeight( )
+	{
+		return GridHeight;
+	}
+
 	GameState::GameState(int gridHeight, int gridWidth) {
 		GridHeight = gridHeight;
 		GridWidth = gridWidth;

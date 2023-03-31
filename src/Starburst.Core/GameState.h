@@ -22,6 +22,8 @@ namespace Starburst {
 		bool CompareEntityPositions(std::tuple<int, int> entityA, std::tuple<int, int> entityB);
 
 	public:
+		int GetGridWidth();
+		int GetGridHeight();
 
 		GameState(int gridHeight, int gridWidth);
 

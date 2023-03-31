@@ -1,19 +1,9 @@
 #include "Renderer.h"
-#include "Utils.h"
+#include "Utilities.h"
 
 Renderer::Renderer(RenderState* renderState)
 {
 	RState = renderState;
-}
-
-void Renderer::RenderBackground()
-{
-	unsigned int* pixel = (unsigned int*)RState->Memory;
-	for (int y = 0; y < RState->Height; y++) {
-		for (int x = 0; x < RState->Width; x++) {
-			*pixel++ = ((y * 0.33) * (x + 1 * x + 1 * 0.2) + 0xf0f0f0) * (0.2 * RState->Width);
-		}
-	}
 }
 
 void Renderer::ClearScreen(unsigned int colour)
@@ -25,8 +15,6 @@ void Renderer::ClearScreen(unsigned int colour)
 		}
 	}
 }
-
-
 
 void Renderer::DrawRectanglePixels(int x0, int y0, int x1, int y1, unsigned int colour)
 {
@@ -45,7 +33,6 @@ void Renderer::DrawRectanglePixels(int x0, int y0, int x1, int y1, unsigned int 
 void Renderer::DrawRectangle(float x, float y, float halfSizeX, float halfSizeY, unsigned int colour)
 {
 	x *= RState->Height * scale;
-		;
 	y *= RState->Height * scale;
 	halfSizeX *= RState->Height * scale;
 	halfSizeY *= RState->Height * scale;
@@ -59,4 +46,83 @@ void Renderer::DrawRectangle(float x, float y, float halfSizeX, float halfSizeY,
 	int y1 = y + halfSizeY;
 
 	DrawRectanglePixels(x0, y0, x1, y1, colour);
+}
+
+void Renderer::DrawGrid(int xSize, int ySize, unsigned int colour)
+{
+	int xPositions;
+	int yPositions;
+	int limit;
+	int limitDifference;
+	bool xLimitOffset = false;
+	bool yLimitOffset = false;
+
+	// Find whether height or width is the limiting size. Set the limit based on max axis.
+	// Set flag to define which is max.
+	if (RState->Width < RState->Height) {
+		xPositions = RState->Width / xSize;
+		yPositions = RState->Width / ySize;
+		limitDifference = (RState->Height - RState->Width) / 2;
+		limit = RState->Width + limitDifference + lineScale;
+		yLimitOffset = true;
+	}
+	else {
+		xPositions = RState->Height / xSize;
+		yPositions = RState->Height / ySize;
+		limitDifference = (RState->Width - RState->Height) / 2;
+		limit = RState->Height + limitDifference + lineScale;
+		xLimitOffset = true;
+	}
+
+	int xOffset;
+	int yOffset;
+	unsigned int* pixel = (unsigned int*)RState->Memory;
+
+	// Offset the x or y axis by half the difference of the difference between the axis
+	if (xLimitOffset) {
+		xOffset = limitDifference;
+		yOffset = 0;
+	}
+	else {
+		xOffset = 0;
+		yOffset = limitDifference - 1;
+
+		// If y axis is larger progress the pixel pointer to the start position.
+		pixel = pixel + (RState->Width * limitDifference);
+	}
+
+	for (int y = yOffset; y < RState->Height; y++) {
+
+		// If x axis is larger on each itteration through offset the pixel pointer by width offset.
+		if (xLimitOffset) { pixel = pixel + xOffset; }
+
+		for (int x = xOffset; x < RState->Width; x++) {
+			int xOffset;
+			int yOffset;
+			if (xLimitOffset) {
+				xOffset = x - limitDifference;
+				yOffset = y;
+			}
+			else {
+				xOffset = x;
+				yOffset = y - limitDifference;
+			}
+			if (x < limit && y < limit) {
+
+				if ((xLimitOffset && x > limitDifference) || (yLimitOffset && y > limitDifference)) {
+					int modX = xOffset % xPositions;
+					if (modX > 0 && modX < lineScale) {
+						*pixel = colour;
+					}
+
+					int modY = yOffset % yPositions;
+					if (modY > 0 && modY < lineScale) {
+						*pixel = colour;
+					}
+				}
+			}
+
+			*pixel++;			
+		}
+	}
 }
