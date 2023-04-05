@@ -26,7 +26,12 @@ TriforceModel::TriforceModel()
 	ea = new ElementArray(indices, sizeof(indices));
 	shader = new Shader("Shaders/default.vert", "Shaders/default.frag");
 
+	// Define format of verticies for shader
+	// Shaders only read bytes, how the vertex is defined needs to be defined as though the shader is only reading bytes.
+	// First shader variable is 3 elements, its floats, the whole vertex is 6 floats long, it starts at the 0 position
+	// This attribute is Vertex position
 	va->LinkAttribute(*vb, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
+	// Second shader variable is 3 elements, its floats, the whole vertex is 6 floats long, it starts at position 3.
 	va->LinkAttribute(*vb, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 
 	va->Unbind();

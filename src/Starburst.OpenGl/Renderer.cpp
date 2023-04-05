@@ -19,7 +19,7 @@ void Renderer::DrawModel(Model& model)
 
 void const Renderer::Clear()
 {
-	glClearColor(0.10f, 0.26f, 0.34f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
