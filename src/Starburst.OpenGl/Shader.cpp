@@ -1,5 +1,7 @@
 #include"Shader.h"
 
+
+
 // Reads a text file and outputs a string with everything in the text file
 std::string get_file_contents(const char* filename)
 {
@@ -70,4 +72,30 @@ void Shader::Bind() const
 void Shader::Delete() const
 {
 	glDeleteProgram(ID);
+}
+
+void const Shader::SetUniform1f(const std::string& name, float v)
+{
+	glUniform1f(GetUniformLocation(name), v);
+}
+
+void const Shader::SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3)
+{
+	glUniform4f(GetUniformLocation(name), v0, v1, v2, v3);
+}
+
+void const Shader::SetUniformMatrix4f(const std::string& name, float v0, float v1, const glm::f32* v2)
+{
+	glUniformMatrix4fv(GetUniformLocation(name), v0, v1, v2);
+}
+
+GLuint Shader::GetUniformLocation(const std::string& name)
+{
+	if (uniformCache.find(name) != uniformCache.end()) {
+		return uniformCache[name];
+	}
+
+	GLuint location = glGetUniformLocation(ID, name.c_str());
+	uniformCache[name] = location;
+	return location;
 }

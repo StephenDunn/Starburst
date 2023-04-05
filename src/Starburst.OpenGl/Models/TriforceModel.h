@@ -6,10 +6,7 @@
 class TriforceModel : public Model
 {
 private:
-	VertexArray* va;
-	VertexBuffer* vb;
-	ElementArray* ea;
-	Shader* shader;
+	
 public:
 	TriforceModel();
 	~TriforceModel();

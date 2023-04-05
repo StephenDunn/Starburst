@@ -48,11 +48,12 @@ int main()
 	glViewport(0, 0, Width, Height);
 
 	Renderer renderer;
-	std::vector<Model> modelVec;
 
 	TriforceModel triforce;
+	TriforceModel triforce2;
 
-	modelVec.push_back(triforce);
+
+	glEnable(GL_DEPTH_TEST);
 
 	float scale = 0.0f;
 	float rotation = 0.0f;
@@ -61,6 +62,7 @@ int main()
 	// Main while loop
 	while (!glfwWindowShouldClose(window))
 	{
+		renderer.Clear();
 		double currentTime = glfwGetTime();
 		if (currentTime - previousTime >= 1/60) {
 			
@@ -71,58 +73,36 @@ int main()
 					forward = false;
 				}
 
-				scale += currentTime - previousTime * 0.1f;
+				scale += (currentTime - previousTime) * 0.5f;
 			}
 			else {
 				if (scale <= 0.0f) {
 					forward = true;
 				}
 
-				scale -= (currentTime - previousTime) * 0.1f;
+				scale -= (currentTime - previousTime) * 0.5f;
 			}
 		}
 		previousTime = currentTime;
 
-		// Specify the color of the background
-		glClearColor(0.10f, 0.26f, 0.34f, 1.0f);
-		// Clean the back buffer and assign the new color to it
-		glClear(GL_COLOR_BUFFER_BIT);
+		triforce.ResetMatrices();
+		triforce.Rotate(glm::radians(rotation), glm::vec3(0.5f, 1.0f, 1.0f));
+		triforce.Translate(glm::vec3(-0.0f, -0.0f, -5.0f));
+		triforce.Perspective(glm::radians(45.0f), (float)(Width / Height), 0.1f, 100.0f);
+		triforce.GetShader().SetUniform1f("scale", scale);
+		renderer.DrawModel(triforce);
 
-		glm::mat4 model = glm::mat4(1.0f);
-		glm::mat4 view = glm::mat4(1.0f);
-		glm::mat4 projection = glm::mat4(1.0f);
-
-		model = glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 1.0f, 0.0f));
-		view = glm::translate(view, glm::vec3(0.0f, -0.5f, -2.0f));
-		projection = glm::perspective(glm::radians(45.0f), (float)(Width / Height), 0.1f, 100.0f);
-
-		GLuint modelID = glGetUniformLocation(triforce.GetShader().ID, "model");
-		glUniformMatrix4fv(modelID, 1, GL_FALSE, glm::value_ptr(model));
-
-		GLuint viewID = glGetUniformLocation(triforce.GetShader().ID, "view");
-		glUniformMatrix4fv(viewID, 1, GL_FALSE, glm::value_ptr(view));
-
-		GLuint projectionID = glGetUniformLocation(triforce.GetShader().ID, "perspective");
-		glUniformMatrix4fv(projectionID, 1, GL_FALSE, glm::value_ptr(projection));
-
-		GLuint uniID = glGetUniformLocation(triforce.GetShader().ID, "scale");
-		glUniform1f(uniID, scale);
-
-		for (Model model : modelVec) {
-
-
-		}
-
-		
-
-		renderer.Draw(triforce.GetVertexArray(), triforce.GetElementArray(), triforce.GetShader());
+		triforce2.ResetMatrices();
+		triforce2.Rotate(glm::radians(rotation * 0.5f), glm::vec3(0.5f, 1.0f, 1.0f));
+		triforce2.Translate(glm::vec3(-0.0f, 1.0f, -5.0f));
+		triforce2.Perspective(glm::radians(45.0f), (float)(Width / Height), 0.1f, 100.0f);
+		triforce2.GetShader().SetUniform1f("scale", scale * -0.5f);
+		renderer.DrawModel(triforce2);
 
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(window);
 		// Take care of all GLFW events
 		glfwPollEvents();
-
-
 	}
 
 
